@@ -37,7 +37,9 @@ import Show from '../pages/Show'
                     createPeople={createPeople} 
                     />} 
                 />
-              <Route path="/people/:id" element={<Show />} />
+              <Route path="/people/:id" element={<Show people={people}
+                />}
+               />
             </Routes>
           </main>
         );
