@@ -5,7 +5,7 @@ import Show from '../pages/Show'
 
     function Main(props) {
         const [people, setPeople] = useState(null)
-        const URL = 'https://quiet-mountain-13880.herokuapp.com/people'
+        const URL = 'https://quiet-mountain-13880.herokuapp.com/people/'
 
         const getPeople = async () => {
             const response = await fetch(URL)
@@ -24,6 +24,24 @@ import Show from '../pages/Show'
             getPeople() // running this again will allow the update, since getPeople will now pull in the new person when it fetches
         }
 
+        const updatePeople = async (id, updatedPerson) => {
+          await fetch(URL + id, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'Application/json'
+            },
+            body: JSON.stringify(updatedPerson)
+          })
+          getPeople()
+        }
+
+        const deletePeople = async (id) => {
+          await fetch(URL + id, {
+            method: 'DELETE'
+          })
+          getPeople()
+        }
+
         useEffect(() => {
             getPeople();
         },  [])
@@ -37,8 +55,12 @@ import Show from '../pages/Show'
                     createPeople={createPeople} 
                     />} 
                 />
-              <Route path="/people/:id" element={<Show people={people}
-                />}
+              <Route path="/people/:id" element={
+                <Show 
+                    people={people}
+                    deletePeople={deletePeople}
+                    updatePeople={updatePeople}
+                    />}
                />
             </Routes>
           </main>
